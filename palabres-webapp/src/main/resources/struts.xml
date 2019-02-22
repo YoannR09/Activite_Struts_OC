@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+
+
+    <package name="base" abstract="true" extends="struts-default">
+
+        <interceptors>
+            <interceptor name="auth" class="org.example.palabres.webapp.interceptor.AuthInterceptor" />
+            <interceptor-stack name="authenticatedStack">
+                <interceptor-ref name="auth" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+
+        <global-results>
+            <result name="error">/jsp/error.jsp</result>
+            <result name="error-forbidden" type="httpheader">
+                <param name="error">403</param>
+            </result>
+            <result name="Exception" type="httpheader">
+                <param name="error">500</param>
+                <param name="parse">true</param>
+                <param name="errorMessage">%{exception}</param>
+            </result>
+            <result name="TechnicalException" type="httpheader">
+                <param name="error">500</param>
+                <param name="parse">true</param>
+                <param name="errorMessage">Erreur technique - %{exception.message}</param>
+            </result>
+            <result name="NotFoundException" type="httpheader">
+                <param name="error">404</param>
+                <param name="parse">true</param>
+                <param name="errorMessage">Objet introuvable - %{exception.message}</param>
+            </result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="Exception" />
+            <exception-mapping exception="org.example.palabres.model.exception.TechnicalException"
+                               result="TechnicalException" />
+            <exception-mapping exception="org.example.palabres.model.exception.NotFoundException"
+                               result="NotFoundException" />
+        </global-exception-mappings>
+    </package>
+
+
+    <package name="public" extends="base">
+
+        <default-action-ref name="index"/>
+        <action name="index">
+            <result>/index.jsp</result>
+        </action>
+
+        <action name="home"
+                class="org.example.palabres.webapp.action.GestionChannelAction"
+                method="doHome">
+            <result name="success">/index.jsp</result>
+        </action>
+
+        <!-- Actions Login/Logout -->
+        <action name="login" class="org.example.palabres.webapp.action.LoginAction" method="doLogin">
+
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack" />
+
+            <result name="input">/jsp/login.jsp</result>
+            <result name="success" type="redirectAction">index</result>
+        </action>
+
+        <action name="logout" class="org.example.palabres.webapp.action.LoginAction" method="doLogout">
+            <result type="redirectAction">index</result>
+        </action>
+
+
+        <action name="demo_functionalException" class="org.example.palabres.webapp.action.DemoExceptionAction" method="doFunctionalException" />
+        <action name="demo_notFoundException" class="org.example.palabres.webapp.action.DemoExceptionAction" method="doNotFoundException" />
+        <action name="demo_technicalException" class="org.example.palabres.webapp.action.DemoExceptionAction" method="doTechnicalException" />
+
+    </package>
+
+    <package name="private" extends="base">
+
+        <default-interceptor-ref name="authenticatedStack" />
+
+        <!-- Actions permettant de créer un projet -->
+        <action name="channel_new"
+                class="org.example.palabres.webapp.action.GestionChannelAction"
+                method="doCreate">
+
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack" />
+
+            <result name="input">/jsp/channel/newChannel.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">channel_detail</param>
+                <param name="channel.name">${channel.name}</param>
+            </result>
+
+        </action>
+        <action name="channel_list"
+                class="org.example.palabres.webapp.action.GestionChannelAction"
+                method="doList">
+            <result name="success">/jsp/channel/list.jsp</result>
+        </action>
+        <!-- Action affichant le détail d'un projet -->
+        <action name="channel_detail"
+                class="org.example.palabres.webapp.action.GestionChannelAction"
+                method="doDetail">
+
+            <interceptor-ref name="store">
+                <param name="operationMode">RETRIEVE</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack" />
+
+            <result name="success">/jsp/channel/detail.jsp</result>
+        </action>
+
+        <action name="newMessage" class="org.example.palabres.webapp.action.GestionChannelAction" method="newMessage">
+            <interceptor-ref name="store">
+                <param name="operationMode">RETRIEVE</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack" />
+            <result name="success">/jsp/channel/list.jsp</result>
+        </action>
+    </package>
+
+</struts>

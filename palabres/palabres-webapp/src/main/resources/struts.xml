@@ -78,6 +78,11 @@
             <result type="redirectAction">index</result>
         </action>
 
+        <!-- Action de démonstration pour l'AJAX -->
+        <action name="ajax_refresh" class="org.example.palabres.webapp.action.AjaxAction">
+            <result name="success">/jsp/channel/detail.jsp</result>
+        </action>
+
 
         <action name="demo_functionalException" class="org.example.palabres.webapp.action.DemoExceptionAction" method="doFunctionalException" />
         <action name="demo_notFoundException" class="org.example.palabres.webapp.action.DemoExceptionAction" method="doNotFoundException" />
@@ -124,12 +129,27 @@
             <result name="success">/jsp/channel/detail.jsp</result>
         </action>
 
+
+
         <action name="newMessage" class="org.example.palabres.webapp.action.GestionChannelAction" method="newMessage">
             <interceptor-ref name="store">
                 <param name="operationMode">RETRIEVE</param>
             </interceptor-ref>
             <interceptor-ref name="defaultStack" />
             <result name="success">/jsp/channel/list.jsp</result>
+        </action>
+    </package>
+
+    <!-- ===== Package pour les actions AJAX ===== -->
+    <package name="ajax" extends="base, json-default">
+
+        <!-- Action renvoyant la liste des Projets -->
+        <action name="ajax_getListMessage"
+                class="org.example.palabres.webapp.action.AjaxAction"
+                method="doAjaxGetListMessage">
+            <result name="success" type="json">
+                <param name="root">listMessage</param>
+            </result>
         </action>
     </package>
 

@@ -104,7 +104,7 @@
                     <input type="checkbox" class="form-check-input" id="checkRefresh">
                     <label class="form-check-label" for="checkRefresh">Auto-refresh</label>
                 </div>
-                <s:submit value="Refresh" id="btnR" onclick="reloadListProjet()" class="btn btn-info" />
+                <button id="btnR" onclick="reloadListMessage()" class="btn btn-info">Refresh</button>
             </div>
         </div>
         <div class="card-body" id="midBody">
@@ -138,7 +138,7 @@
         });
 
     });
-    function reloadListProjet() {
+    function reloadListMessage() {
         // URL de l'action AJAX
         var url = "<s:url action="ajax_getListMessage"/>";
 

@@ -24,18 +24,18 @@ import static org.example.palabres.business.impl.ChatConfig.Utilisateurs.*;
 public class ChatConfig {
 
     protected enum Utilisateurs {
-        ARTHUR("Arthur"),
-        GUENIEVRE("Guenièvre"),
-        KADOC("Kadoc"),
-        KARADOC("Karadoc"),
-        LEODAGAN("Léodagan"),
-        LE_ROI_BURGONDE("Le Roi Burgonde"),
-        MERLIN("Merlin"),
-        PERCEVAL("Perceval");
+        ARTHUR("Arthur","123"),
+        GUENIEVRE("Guenièvre","123"),
+        KADOC("Kadoc","123"),
+        KARADOC("Karadoc","123"),
+        LEODAGAN("Léodagan","123"),
+        LE_ROI_BURGONDE("Le Roi Burgonde","123"),
+        MERLIN("Merlin","123"),
+        PERCEVAL("Perceval","123");
 
         private Utilisateur utilisateur;
-        private Utilisateurs(String pPseudo) {
-            utilisateur = new Utilisateur(pPseudo);
+        private Utilisateurs(String pPseudo,String password) {
+            utilisateur = new Utilisateur(pPseudo,password);
         }
         public Utilisateur u() {
             return utilisateur;

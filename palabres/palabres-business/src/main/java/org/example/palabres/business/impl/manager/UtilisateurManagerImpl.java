@@ -53,13 +53,6 @@ public class UtilisateurManagerImpl extends AbstractManager implements Utilisate
             throw new FunctionalException("L'objet Utilisateur ne doit pas être null !");
         }
 
-        // Validation du bean pChannel
-        Set<ConstraintViolation<Utilisateur>> vViolations = getConstraintValidator().validate(pUtilisateur);
-        if (!vViolations.isEmpty()) {
-            throw new FunctionalException("L'objet Utilisateur est invalide",
-                                          new ConstraintViolationException(vViolations));
-        }
-
         // Vérification qu'un Utilisateur de même pseudo n'existe pas déjà
         if (searchUtilisateur(pUtilisateur.getPseudo()).isPresent()) {
             throw new FunctionalException("Le pseudo est déjà utilisé !");

@@ -16,6 +16,8 @@ public class Utilisateur {
     @Size(min = 1)
     private String pseudo;
 
+    private String password;
+
 
     // ==================== Constructeurs ====================
     /**
@@ -30,8 +32,9 @@ public class Utilisateur {
      *
      * @param pPseudo -
      */
-    public Utilisateur(String pPseudo) {
+    public Utilisateur(String pPseudo,String pPassword) {
         pseudo = pPseudo;
+        password = pPassword;
     }
 
 
@@ -41,6 +44,14 @@ public class Utilisateur {
     }
     public void setPseudo(String pPseudo) {
         pseudo = pPseudo;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 

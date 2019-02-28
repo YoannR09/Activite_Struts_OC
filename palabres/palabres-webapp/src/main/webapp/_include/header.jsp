@@ -24,6 +24,7 @@
                 <s:a action="logout" class="nav-link">Deconnexion</s:a>
             </s:if>
             <s:else>
+                <s:a action="newUser" class="nav-link">Nouveau compte</s:a>
                 <s:a action="login" class="nav-link">Connexion</s:a>
             </s:else>
         </form>

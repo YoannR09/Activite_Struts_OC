@@ -30,12 +30,12 @@ public class ChatManagerImplTest {
 
 
     @Test
-    public void getChannel() throws NotFoundException {
+    public void getChannel() throws NotFoundException, TechnicalException {
         Assert.assertNotNull(chatManager.getChannel("Kaamelott"));
     }
 
     @Test(expected = NotFoundException.class)
-    public void testgetUtilisateurNFE() throws NotFoundException {
+    public void testgetUtilisateurNFE() throws NotFoundException, TechnicalException {
         Assert.assertNotNull(chatManager.getChannel("UNKNOWN_CHANNEL"));
     }
 

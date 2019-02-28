@@ -53,6 +53,10 @@
         {
             width: 100%;
         }
+        #mid
+        {
+            height: 300px;
+        }
     </style>
 </head>
 <body>
@@ -68,34 +72,27 @@
 
         <div class="card-header">
             <div style="width: 100%; display: flex; justify-content: space-around">
-            <h2><s:property value="channel.name" /></h2>
+                <h2><s:property value="name" /></h2>
             </div>
         </div>
-        <div class="card-body" id="mid">
+        <div class="card-body" id="mid" style="text-align: left">
             <s:actionerror/>
             <s:actionmessage/>
-            <ul>
-                <s:iterator value="listMessage">
-                    <li>
-                        <s:param name="message" value="message"/>
-                        <s:property value="message.message"/>
-                        <s:property value="message.author"/>
-                    </li>
-                </s:iterator>
-            </ul>
+            <s:iterator value="listMessage">
+                <div id="cadreMessage" style="margin: 20px;">
+                    <span class="badge badge-info" style=" padding: 10px;" id="message"><em></em></span>
+                </div>
+            </s:iterator>
         </div>
 
         <div class="card-footer bg-transparent" id="bot">
             <div id="addMessage"style="width: 50%;" >
-                <s:form action="newMessage" id="form">
-                    <s:textfield name="message.message" class="form-control" placeholder="Ecrivez votre message..." id="message"/>
-                    <s:submit id="btn" value="Envoyer" class="btn btn-info"/>
-                </s:form>
+                    <s:textfield name="contenuMessage" class="form-control" placeholder="Ecrivez votre message..."/>
+                    <button id="btn" onclick="addMessage()" class="btn btn-info">Envoyer</button>
             </div>
-
-    </div>
+        </div>
         <button type="button" class="btn btn-info" id="slide" data-dismiss="modal"></button>
-</div>
+    </div>
     <div class="card text-white bg-dark mb-3"
          id="cardDroite">
         <div class="card-header">
@@ -110,7 +107,6 @@
         <div class="card-body" id="midBody">
             <button type="button" class="btn btn-info" id="env">Ecrivez votre message</button>
         </div>
-
     </div>
 </div>
 
@@ -150,13 +146,34 @@
                 $listMessage.empty();
                 jQuery.each(data, function (key, val) {
                     $listMessage.append(
-                        jQuery("<li>")
+                        jQuery($("<em>"))
                             .append(val.message)
                     );
                 });
             })
             .fail(function () {
-                alert("Une erreur s'est produite.");
+                alert("Erreur");
+            });
+    }
+    function addMessage() {
+        // URL de l'action AJAX
+        var url = "<s:url action="ajax_newMessage"/>";
+
+        // Action AJAX en POST
+        jQuery.post(
+            url,
+            function (data) {
+                var $listMessage = jQuery("#listMessage");
+                $listMessage.empty();
+                jQuery.each(data, function (key, val) {
+                    $listMessage.append(
+                        jQuery($("<em>"))
+                            .append(val.message)
+                    );
+                });
+            })
+            .fail(function () {
+                alert("Erreur");
             });
     }
 

@@ -74,6 +74,17 @@
             <result name="success" type="redirectAction">index</result>
         </action>
 
+        <action name="newUser"
+                class="org.example.palabres.webapp.action.LoginAction"
+                method="doCreate">
+
+            <result name="input">/jsp/newLogin.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">login</param>
+            </result>
+
+        </action>
+
         <action name="logout" class="org.example.palabres.webapp.action.LoginAction" method="doLogout">
             <result type="redirectAction">index</result>
         </action>
@@ -128,22 +139,11 @@
 
             <result name="success">/jsp/channel/detail.jsp</result>
         </action>
-
-
-
-        <action name="newMessage" class="org.example.palabres.webapp.action.GestionChannelAction" method="newMessage">
-            <interceptor-ref name="store">
-                <param name="operationMode">RETRIEVE</param>
-            </interceptor-ref>
-            <interceptor-ref name="defaultStack" />
-            <result name="success">/jsp/channel/list.jsp</result>
-        </action>
     </package>
 
     <!-- ===== Package pour les actions AJAX ===== -->
     <package name="ajax" extends="base, json-default">
-
-        <!-- Action renvoyant la liste des Projets -->
+        <!-- Action renvoyant la liste des channels -->
         <action name="ajax_getListMessage"
                 class="org.example.palabres.webapp.action.AjaxAction"
                 method="doAjaxGetListMessage">
@@ -151,6 +151,13 @@
                 <param name="root">listMessage</param>
             </result>
         </action>
-    </package>
 
+        <action name="ajax_newMessage"
+                class="org.example.palabres.webapp.action.AjaxAction"
+                method="doAjaxAddMessage">
+            <result name="success" type="json">
+                <param name="root">listMessage</param>
+            </result>
+        </action>
+    </package>
 </struts>

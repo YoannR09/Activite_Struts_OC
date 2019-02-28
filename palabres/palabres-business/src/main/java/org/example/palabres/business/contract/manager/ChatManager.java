@@ -28,7 +28,7 @@ public interface ChatManager {
      * @return Le {@link Channel}
      * @throws NotFoundException Si le channel n'est pas trouvé
      */
-    Channel getChannel(String pName) throws NotFoundException;
+    Channel getChannel(String pName) throws NotFoundException, TechnicalException;
 
     /**
      * Ajoute un nouveau {@link Channel}

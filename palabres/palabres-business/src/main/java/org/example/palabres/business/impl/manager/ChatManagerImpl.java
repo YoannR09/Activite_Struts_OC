@@ -120,7 +120,7 @@ public class ChatManagerImpl extends AbstractManager implements ChatManager {
 
 
     @Override
-    public Channel getChannel(String pName) throws NotFoundException {
+    public Channel getChannel(String pName) throws NotFoundException, TechnicalException {
         Channel vChannel = this.searchChannel(pName)
                                .orElseThrow(() -> new NotFoundException("Channel non trouvé : NAME=" + pName));
         return vChannel;
@@ -131,13 +131,6 @@ public class ChatManagerImpl extends AbstractManager implements ChatManager {
     public void addChannel(Channel pChannel) throws FunctionalException, TechnicalException {
         if (pChannel == null) {
             throw new FunctionalException("L'objet Channel ne doit pas être null !");
-        }
-
-        // Validation du bean pChannel
-        Set<ConstraintViolation<Channel>> vViolations = getConstraintValidator().validate(pChannel);
-        if (!vViolations.isEmpty()) {
-            throw new FunctionalException("L'objet Channel est invalide",
-                                          new ConstraintViolationException(vViolations));
         }
 
         // Vérification qu'un channel de même nom n'existe pas déjà
@@ -178,13 +171,6 @@ public class ChatManagerImpl extends AbstractManager implements ChatManager {
         }
         if (pMessage == null) {
             throw new FunctionalException("L'objet Message ne doit pas être null !");
-        }
-
-        // Validation du bean pMessage
-        Set<ConstraintViolation<Message>> vViolations = getConstraintValidator().validate(pMessage);
-        if (!vViolations.isEmpty()) {
-            throw new FunctionalException("L'objet Message est invalide",
-                                          new ConstraintViolationException(vViolations));
         }
 
         List<Message> vListMessage =  this.getChannelMessageList(pChannel);

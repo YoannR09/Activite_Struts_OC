@@ -72,7 +72,7 @@
 
         <div class="card-header">
             <div style="width: 100%; display: flex; justify-content: space-around">
-                <h2><s:property value="name" /></h2>
+                <h2><s:property value="channel.name" /></h2>
             </div>
         </div>
         <div class="card-body" id="mid" style="text-align: left">
@@ -87,8 +87,8 @@
 
         <div class="card-footer bg-transparent" id="bot">
             <div id="addMessage"style="width: 50%;" >
-                    <s:textfield name="contenuMessage" class="form-control" placeholder="Ecrivez votre message..."/>
-                    <button id="btn" onclick="addMessage()" class="btn btn-info">Envoyer</button>
+                <s:textfield name="contenuMessage" class="form-control" placeholder="Ecrivez votre message..."/>
+                <button id="btn" onclick="addMessage()" class="btn btn-info">Envoyer</button>
             </div>
         </div>
         <button type="button" class="btn btn-info" id="slide" data-dismiss="modal"></button>
@@ -112,6 +112,8 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+
+    <!-- Function qui gère l ouverture de la div pour écrire un message. -->
     $(function() {
         $('#bot').hide();
         $('#slide').hide();
@@ -134,6 +136,8 @@
         });
 
     });
+
+    <!-- Cette méthode refresh la liste des messages contenu dans ce channel -->
     function reloadListMessage() {
         // URL de l'action AJAX
         var url = "<s:url action="ajax_getListMessage"/>";
@@ -152,9 +156,11 @@
                 });
             })
             .fail(function () {
-                alert("Erreur");
+                alert("Erreur !!");
             });
     }
+
+    <!-- Cette méthode ajoute le message au channel et ensuite refresh la liste de messages -->
     function addMessage() {
         // URL de l'action AJAX
         var url = "<s:url action="ajax_newMessage"/>";

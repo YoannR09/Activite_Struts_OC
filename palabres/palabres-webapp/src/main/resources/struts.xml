@@ -110,15 +110,10 @@
                 class="org.example.palabres.webapp.action.GestionChannelAction"
                 method="doCreate">
 
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-            <interceptor-ref name="defaultStack" />
-
             <result name="input">/jsp/channel/newChannel.jsp</result>
             <result name="success" type="redirectAction">
+                <param name="channel.name">${name}</param>
                 <param name="actionName">channel_detail</param>
-                <param name="channel.name">${channel.name}</param>
             </result>
 
         </action>

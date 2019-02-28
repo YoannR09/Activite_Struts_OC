@@ -159,8 +159,6 @@ public class GestionChannelAction extends ActionSupport{
                     // Si ajout avec succès -> Result "success"
 
                     vResult = ActionSupport.SUCCESS;
-                    nameChannel = name;
-                    System.out.println(nameChannel);
                     this.addActionMessage("Channel ajouté avec succès");
 
                 } catch (FunctionalException pEx) {

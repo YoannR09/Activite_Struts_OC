@@ -119,7 +119,6 @@ public class LoginAction extends ActionSupport  implements SessionAware {
         this.session = map;
     }
 
-
     public Map<String, Object> getSession() {
         return session;
     }

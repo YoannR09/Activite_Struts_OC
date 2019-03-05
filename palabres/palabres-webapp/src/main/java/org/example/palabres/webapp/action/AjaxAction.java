@@ -1,6 +1,7 @@
 package org.example.palabres.webapp.action;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -24,15 +25,17 @@ public class AjaxAction extends ActionSupport {
     // ==================== Attributs ====================
     @Inject
     private ManagerFactory managerFactory;
+    private GestionChannelAction channelAction;
+    private LoginAction loginAction;
 
     // ----- Eléments en sortie
     private Channel         channel;
-    private Message         message;
     private Utilisateur     utilisateur;
     private List<Message>   listMessage;
     private String          name;
     private String          pseudo;
     private String          contenuMessage;
+
 
 
     // ==================== Getters/Setters ====================
@@ -43,8 +46,6 @@ public class AjaxAction extends ActionSupport {
     public Channel getChannel(){
         return channel;
     }
-
-    public Message getMessage() { return message; }
 
     public String getContenuMessage() { return contenuMessage; }
 
@@ -72,11 +73,20 @@ public class AjaxAction extends ActionSupport {
      * Action "AJAX" renvoyant la liste des messages d'un channel.
      * @return success
      */
-    public String doAjaxGetListMessage() throws NotFoundException, TechnicalException {
-        channel = managerFactory.getChatManager().getChannel(name);
-        listMessage = managerFactory.getChatManager().getChannelMessageList(channel);
-        return ActionSupport.SUCCESS;
+    public String doAjaxGetListMessage() { // throws NotFoundException, TechnicalException {
+        String vResult = ActionSupport.SUCCESS;
+        try {
+
+            channel = managerFactory.getChatManager().getChannel("Random");
+            listMessage = managerFactory.getChatManager().getChannelMessageList(channel);
+
+        } catch (NotFoundException | TechnicalException e) {
+            this.addActionError(e.getMessage());
+            vResult = ActionSupport.ERROR;
+        }
+        return vResult;
     }
+
 
     /**
      * Méthode pour l'ajout d'un message.
@@ -88,13 +98,24 @@ public class AjaxAction extends ActionSupport {
      * @throws FunctionalException
      * @throws TechnicalException
      */
-    public String doAjaxAddMessage() throws NotFoundException, FunctionalException, TechnicalException {
-        channel = managerFactory.getChatManager().getChannel(name);
-        utilisateur = managerFactory.getUtilisateurManager().getUtilisateur(pseudo);
-        managerFactory.getChatManager().addMessage(channel, new Message(utilisateur, contenuMessage));
-        listMessage = managerFactory.getChatManager().getChannelMessageList(channel);
-        return  ActionSupport.SUCCESS;
+    public String doAjaxAddMessage() { //throws NotFoundException, FunctionalException, TechnicalException {
+        String vResult = ActionSupport.SUCCESS;
+        try {
+
+            channel = managerFactory.getChatManager().getChannel("Random");
+
+            utilisateur = managerFactory.getUtilisateurManager().getUtilisateur("Merlin");
+            managerFactory.getChatManager().addMessage(channel, new Message(utilisateur, contenuMessage));
+            listMessage = managerFactory.getChatManager().getChannelMessageList(channel);
+
+
+            // vResult = this.doAjaxGetListMessage(); // En cas de succès : renvoyer à la page la liste des messages à jour.
+        } catch (FunctionalException | NotFoundException | TechnicalException e) {
+            this.addActionError(e.getMessage());
+            vResult = ActionSupport.ERROR;
+        }
+        return vResult;
+
     }
 
-
-}
+    }

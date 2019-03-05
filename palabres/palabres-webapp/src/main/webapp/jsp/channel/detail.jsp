@@ -48,7 +48,6 @@
         #btn{
             margin: 5px;
         }
-
         #env
         {
             width: 100%;
@@ -56,6 +55,7 @@
         #mid
         {
             height: 300px;
+            overflow-y: scroll;
         }
     </style>
 </head>
@@ -67,8 +67,7 @@
 
 <div id="page">
 
-    <div class="card text-white bg-dark mb-3"
-         id="card">
+    <div class="card text-white bg-dark mb-3" id="card">
 
         <div class="card-header">
             <div style="width: 100%; display: flex; justify-content: space-around">
@@ -76,17 +75,15 @@
             </div>
         </div>
         <div class="card-body" id="mid" style="text-align: left">
-            <s:actionerror/>
-            <s:actionmessage/>
-            <s:iterator value="listMessage">
                 <div id="cadreMessage" style="margin: 20px;">
-                    <span class="badge badge-info" style=" padding: 10px;" id="message"><em></em></span>
+                    <div id="listMessage">
+
+                    </div>
                 </div>
-            </s:iterator>
         </div>
 
         <div class="card-footer bg-transparent" id="bot">
-            <div id="addMessage"style="width: 50%;" >
+            <div id="addMessage" style="width: 50%;" >
                 <s:textfield name="contenuMessage" class="form-control" placeholder="Ecrivez votre message..."/>
                 <button id="btn" onclick="addMessage()" class="btn btn-info">Envoyer</button>
             </div>
@@ -112,9 +109,10 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-
-    <!-- Function qui gère l ouverture de la div pour écrire un message. -->
     $(function() {
+
+        setInterval(refresh, 5000);
+
         $('#bot').hide();
         $('#slide').hide();
         $("#env").click(function() {
@@ -137,7 +135,14 @@
 
     });
 
-    <!-- Cette méthode refresh la liste des messages contenu dans ce channel -->
+    function refresh() {
+        var checkBox = document.getElementById("checkRefresh");
+
+        if (checkBox.checked == true) {
+            reloadListMessage();
+        }
+    }
+
     function reloadListMessage() {
         // URL de l'action AJAX
         var url = "<s:url action="ajax_getListMessage"/>";
@@ -147,10 +152,14 @@
             url,
             function (data) {
                 var $listMessage = jQuery("#listMessage");
+                $('#messageAffichage').empty();
                 $listMessage.empty();
                 jQuery.each(data, function (key, val) {
                     $listMessage.append(
-                        jQuery($("<em>"))
+                        jQuery("<br /><span class='badge badge-info' style='padding :10px;margin-bottom: 15px;'>").append(val.author.pseudo)
+                    );
+                    $listMessage.append(
+                        jQuery("<span class='badge badge-light' style='padding :10px;margin-bottom: 15px;'>")
                             .append(val.message)
                     );
                 });
@@ -160,28 +169,48 @@
             });
     }
 
-    <!-- Cette méthode ajoute le message au channel et ensuite refresh la liste de messages -->
     function addMessage() {
+
+        // récupère le message entré par l'utilisateur
+        var contenuMessage = $("input[name=contenuMessage]").val();
+
         // URL de l'action AJAX
         var url = "<s:url action="ajax_newMessage"/>";
+
+        // Paramètres de la requête AJAX
+        var params = {
+            contenuMessage: contenuMessage
+        };
 
         // Action AJAX en POST
         jQuery.post(
             url,
-            function (data) {
-                var $listMessage = jQuery("#listMessage");
-                $listMessage.empty();
+
+            params,
+            function (data) { // La méthode qui lit le résultat retourné à la suite de l'envoi de la requêt POST
+                var $listMessage = jQuery("#listMessage"); // OFA : il faut qu'une balise html existe avec cet id="listMessage" pour savoir ou mettre la liste des mesages.
+
+                $listMessage.empty(); // Oups pourquoi vide t'on le résultat obtenu ?
+
+                $('#messageAffichage').empty();
+
                 jQuery.each(data, function (key, val) {
                     $listMessage.append(
-                        jQuery($("<em>"))
-                            .append(val.message)
+                        jQuery("<br /><span class='badge badge-info' style='padding :10px;margin-bottom: 15px;'>").append(val.author.pseudo)
                     );
+                    $listMessage.append(
+                        jQuery("<span class='badge badge-light' style='padding :10px;margin-bottom: 15px;'>").append(val.message)
+                    );
+                    console.log(val.message);
                 });
             })
             .fail(function () {
                 alert("Erreur");
             });
+
+        $("input[name=contenuMessage]").val(""); //-- On vide le champ de saisie du nouveau message à chaque tour.
     }
+
 
 </script>
 </body>

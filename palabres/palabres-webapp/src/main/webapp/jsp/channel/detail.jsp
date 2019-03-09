@@ -71,7 +71,7 @@
 
         <div class="card-header">
             <div style="width: 100%; display: flex; justify-content: space-around">
-                <h2><s:property value="channel.name" /></h2>
+                <h2 id="nameChannel"><s:property value="channel.name" /></h2>
             </div>
         </div>
         <div class="card-body" id="mid" style="text-align: left">
@@ -112,6 +112,7 @@
     $(function() {
 
         setInterval(refresh, 5000);
+        reloadListMessage();
 
         $('#bot').hide();
         $('#slide').hide();
@@ -147,9 +148,16 @@
         // URL de l'action AJAX
         var url = "<s:url action="ajax_getListMessage"/>";
 
+        var name =$("#nameChannel").text();
+
+        var params = {
+            name: name
+        };
+
         // Action AJAX en POST
         jQuery.post(
             url,
+            params,
             function (data) {
                 var $listMessage = jQuery("#listMessage");
                 $('#messageAffichage').empty();
@@ -174,12 +182,18 @@
         // récupère le message entré par l'utilisateur
         var contenuMessage = $("input[name=contenuMessage]").val();
 
+        var pseudo =$("#loginText").text();
+
+        var name =$("#nameChannel").text();
+
         // URL de l'action AJAX
         var url = "<s:url action="ajax_newMessage"/>";
 
         // Paramètres de la requête AJAX
         var params = {
-            contenuMessage: contenuMessage
+            contenuMessage: contenuMessage,
+            pseudo: pseudo,
+            name: name
         };
 
         // Action AJAX en POST

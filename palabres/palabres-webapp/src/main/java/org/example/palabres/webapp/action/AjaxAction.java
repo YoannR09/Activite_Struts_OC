@@ -30,7 +30,7 @@ public class AjaxAction extends ActionSupport {
 
     // ----- Eléments en sortie
     private Channel         channel;
-    private Utilisateur     utilisateur;
+    private Utilisateur     user;
     private List<Message>   listMessage;
     private String          name;
     private String          pseudo;
@@ -55,13 +55,13 @@ public class AjaxAction extends ActionSupport {
 
     public void setName(String name) { this.name = name; }
 
-    public Utilisateur getUtilisateur() { return utilisateur; }
-
-    public void setUtilisateur(Utilisateur utilisateur) { this.utilisateur = utilisateur; }
-
     public String getPseudo() { return pseudo; }
 
     public void setPseudo(String pseudo) { this.pseudo = pseudo; }
+
+    public Utilisateur getUser() { return user; }
+
+    public void setUser(Utilisateur user) { this.user = user; }
 
 
     // ==================== Méthodes ====================
@@ -77,7 +77,7 @@ public class AjaxAction extends ActionSupport {
         String vResult = ActionSupport.SUCCESS;
         try {
 
-            channel = managerFactory.getChatManager().getChannel("Random");
+            channel = managerFactory.getChatManager().getChannel(name);
             listMessage = managerFactory.getChatManager().getChannelMessageList(channel);
 
         } catch (NotFoundException | TechnicalException e) {
@@ -101,11 +101,10 @@ public class AjaxAction extends ActionSupport {
     public String doAjaxAddMessage() { //throws NotFoundException, FunctionalException, TechnicalException {
         String vResult = ActionSupport.SUCCESS;
         try {
+            channel = managerFactory.getChatManager().getChannel(name);
 
-            channel = managerFactory.getChatManager().getChannel("Random");
-
-            utilisateur = managerFactory.getUtilisateurManager().getUtilisateur("Merlin");
-            managerFactory.getChatManager().addMessage(channel, new Message(utilisateur, contenuMessage));
+            user = managerFactory.getUtilisateurManager().getUtilisateur(pseudo);
+            managerFactory.getChatManager().addMessage(channel, new Message(user, contenuMessage));
             listMessage = managerFactory.getChatManager().getChannelMessageList(channel);
 
 

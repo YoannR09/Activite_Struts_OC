@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" addBOMForNewFiles="with NO BOM">
+    <file url="file://$PROJECT_DIR$/palabres" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/palabres/palabres-business" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/palabres/palabres-model" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/palabres/palabres-technical" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/palabres/palabres-webapp" charset="UTF-8" />
+  </component>
+</project>

@@ -23,9 +23,8 @@
             </s:if>
         </ul>
         <form class="form-inline my-2 my-lg-0" >
-            <s:if test="#session.user">
-               <span id="loginText"> Utilisateur :
-                <s:property value="#session.user.pseudo" /></span>
+            <s:if test="#session.user"><span id="label" style="color: white; margin-right: 5px;"> Utilisateur :  </span>
+               <span id="loginText"><s:property value="#session.user.pseudo" /></span>
                 <s:a action="logout" class="nav-link">Deconnexion</s:a>
             </s:if>
             <s:else>
